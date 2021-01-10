@@ -1,0 +1,16 @@
+// @EgoctlOverwrite YES
+// @EgoctlGenerateTime {{generateTime}}
+package router
+
+import (
+	"github.com/gotomicro/ego/server/egin"
+	"{{packagePath}}/pkg/invoker"
+)
+
+func ServeHTTP() *egin.Component {
+	r := invoker.Gin
+    {% for value in modelNames %}
+    Init{{value}}(r)
+    {% endfor %}
+	return r
+}

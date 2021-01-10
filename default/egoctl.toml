@@ -1,0 +1,55 @@
+renderPath = "tmpl"
+[[descriptor]]
+    module = "ignore"
+    srcName = "gitignore.tmpl"
+    dstPath = "{{pathBackend}}/.gitignore"
+[[descriptor]]
+    module = "config"
+    srcName = "config.toml.tmpl"
+    dstPath = "{{pathBackend}}/config/local.toml"
+[[descriptor]]
+    module = "main"
+    srcName = "main.go.tmpl"
+    dstPath = "{{pathBackend}}/.gitignore"
+[[descriptor]]
+    module = "api"
+    srcName = "api.go.tmpl"
+    dstPath = "{{pathBackend}}/pkg/router/api/{{modelNameSnake}}.go"
+[[descriptor]]
+    module = "mysql"
+    srcName = "default_mysql.go.tmpl"
+    dstPath = "{{pathBackend}}/pkg/model/mysql/default.go"
+    once = true
+[[descriptor]]
+    module = "transport"
+    srcName = "transport.go.tmpl"
+    dstPath = "{{pathBackend}}/pkg/model/transport/transport.go"
+    once = true
+[[descriptor]]
+    module = "mysql"
+    srcName = "mysql.go.tmpl"
+    dstPath = "{{pathBackend}}/pkg/model/mysql/{{modelNameSnake}}.go"
+[[descriptor]]
+    module = "dto"
+    srcName = "dto.go.tmpl"
+    dstPath = "{{pathBackend}}/pkg/model/dto/{{modelNameSnake}}.go"
+[[descriptor]]
+    module = "router"
+    srcName = "router_api.go.tmpl"
+    dstPath = "{{pathBackend}}/pkg/router/{{modelNameSnake}}.go"
+[[descriptor]]
+    module = "router"
+    srcName = "router.go.tmpl"
+    dstPath = "{{pathBackend}}/pkg/router/router.go"
+[[descriptor]]
+module = "main"
+srcName = "main.go.tmpl"
+dstPath = "{{pathBackend}}/main.go"
+[[descriptor]]
+module = "invoker"
+srcName = "invoker.go.tmpl"
+dstPath = "{{pathBackend}}/pkg/invoker/invoker.go"
+[[descriptor]]
+module = "core"
+srcName = "core.go.tmpl"
+dstPath = "{{pathBackend}}/pkg/router/core/core.go"

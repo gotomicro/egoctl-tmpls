@@ -1,0 +1,10 @@
+debug = false
+contextDebug = false
+proType = "default"
+apiPrefix = "/api/admin"
+enableGitPull = false
+enableFormat = true
+gitPull = true
+[path]
+backend =  "./"
+

@@ -1,0 +1,15 @@
+// @EgoctlOverwrite YES
+// @EgoctlGenerateTime {{generateTime}}
+package dto
+
+type {{modelName|upperFirst}}Create struct {
+	{% for value in modelSchemas %}
+	{{value.FieldName}} {{value.FieldType}} `json:"{{value|fieldGetTag:"json"}}" binding:"{{value|fieldGetTag:"binding"}}"` {{value.FieldComment}}
+	{% endfor %}
+}
+
+type {{modelName|upperFirst}}Update struct {
+	{% for value in modelSchemas %}
+	{{value.FieldName}} {{value.FieldType}} `json:"{{value|fieldGetTag:"json"}}" binding:"{{value|fieldGetTag:"binding"}}"` {{value.FieldComment}}
+	{% endfor %}
+}

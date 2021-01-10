@@ -1,0 +1,17 @@
+// @EgoctlOverwrite YES
+// @EgoctlGenerateTime {{generateTime}}
+package router
+
+import (
+	"{{packagePath}}/pkg/router/api"
+    "github.com/gin-gonic/gin"
+    "{{packagePath}}/pkg/router/core"
+)
+
+func Init{{modelName|upperFirst}}(r gin.IRoutes) {
+    r.GET("{{apiPrefix}}/{{modelName}}s/:{{modelSchemas|fieldsGetPrimaryKey|lowerFirst}}", core.Handle(api.{{modelName|upperFirst}}Info))
+    r.GET("{{apiPrefix}}/{{modelName}}s", core.Handle(api.{{modelName|upperFirst}}List))
+    r.POST("{{apiPrefix}}/{{modelName}}s", core.Handle(api.{{modelName|upperFirst}}Create))
+    r.PUT("{{apiPrefix}}/{{modelName}}s/:{{modelSchemas|fieldsGetPrimaryKey|lowerFirst}}", core.Handle(api.{{modelName|upperFirst}}Update))
+    r.DELETE("{{apiPrefix}}/{{modelName}}s/:{{modelSchemas|fieldsGetPrimaryKey|lowerFirst}}", core.Handle(api.{{modelName|upperFirst}}Delete))
+}

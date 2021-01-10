@@ -1,0 +1,107 @@
+// @EgoctlOverwrite YES
+// @EgoctlGenerateTime {{generateTime}}
+package {{packageName}}
+
+import (
+	"{{packagePath}}/pkg/model/mysql"
+	"{{packagePath}}/pkg/invoker"
+	"{{packagePath}}/pkg/model/transport"
+	"{{packagePath}}/pkg/model/dto"
+	"github.com/spf13/cast"
+    "{{packagePath}}/pkg/router/core"
+)
+
+// {{modelName|upperFirst}}Info 查询单条记录
+func {{modelName|upperFirst}}Info(c *core.Context) {
+	id := cast.ToInt(c.Param("{{modelSchemas|fieldsGetPrimaryKey|lowerFirst}}"))
+	if id == 0 {
+	    c.JSONE(1, "请求{{modelPrimaryKey|lowerFirst}}错误",nil)
+		return
+	}
+    info, _ := mysql.{{modelName|upperFirst}}Info(invoker.Db, id)
+	c.JSONOK(info)
+}
+
+// {{modelName|upperFirst}}List 查询多条带分页记录
+func {{modelName|upperFirst}}List(c *core.Context) {
+    req := &transport.ReqPage{}
+	if err := c.Bind(req); err != nil {
+		c.JSONE(1, "参数错误", err)
+		return
+	}
+
+	query := mysql.Conds{}
+    {% for value in modelSchemas %}if v := c.Query("{{value.FieldName|snakeString|lowerFirst}}"); v != "" {
+        query["{{value.FieldName|snakeString|lowerFirst}}"] = v
+    }
+    {% endfor %}
+
+	total, list := mysql.{{modelName|upperFirst}}ListPage(query, req)
+	c.JSONPage(list, core.Pagination{
+		Current: req.Current, PageSize: req.PageSize, Total: total,
+	})
+}
+
+// {{modelName|upperFirst}}Create 创建记录
+func {{modelName|upperFirst}}Create(c *core.Context) {
+    req := &dto.{{modelName|upperFirst}}Create{}
+	if err := c.Bind(req); err != nil {
+		c.JSONE(1, "参数错误: "+err.Error(), err)
+		return
+	}
+
+    create := &mysql.{{modelName|upperFirst}}{
+      {% for value in modelSchemas %}
+      {{value.FieldName|camelString}}:req.{{value.FieldName|camelString}},
+      {% endfor %}
+    }
+
+    err := mysql.{{modelName|upperFirst}}Create(invoker.Db, create)
+    if err != nil {
+        c.JSONE(1, "创建失败", err)
+        return
+    }
+	c.JSONOK(req)
+}
+
+// {{modelName|upperFirst}}Update 更新指定记录
+func {{modelName|upperFirst}}Update(c *core.Context) {
+    req := &dto.{{modelName|upperFirst}}Update{}
+	if err := c.Bind(req); err != nil {
+		c.JSONE(1, "参数错误: "+err.Error(), err)
+		return
+	}
+
+    id := cast.ToInt(c.Param("{{modelSchemas|fieldsGetPrimaryKey|lowerFirst}}"))
+    if id == 0 {
+        c.JSONE(1, "请求{{modelPrimaryKey|lowerFirst}}错误",nil)
+        return
+    }
+
+    err := mysql.{{modelName|upperFirst}}Update(invoker.Db, id, mysql.Ups{
+        {% for value in modelSchemas %}{% if value.FieldName != modelPrimaryKey|lowerFirst %}"{{value.FieldName|snakeString}}":req.{{value.FieldName|camelString}},
+        {% endif %}{% endfor %}
+    })
+    if err != nil {
+        c.JSONE(1, "更新失败", err)
+        return
+    }
+	c.JSONOK()
+}
+
+// {{modelName|upperFirst}}Delete 删除指定记录
+func {{modelName|upperFirst}}Delete(c *core.Context) {
+    id := cast.ToInt(c.Param("{{modelSchemas|fieldsGetPrimaryKey|lowerFirst}}"))
+    if id == 0 {
+        c.JSONE(1, "请求{{modelSchemas|fieldsGetPrimaryKey|lowerFirst}}错误",nil)
+        return
+    }
+
+    err := mysql.{{modelName|upperFirst}}Delete(invoker.Db, id)
+    if err != nil {
+        c.JSONE(1, "删除失败", err)
+        return
+    }
+	c.JSONOK()
+}
+
