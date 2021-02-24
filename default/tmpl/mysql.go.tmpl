@@ -12,7 +12,7 @@ import (
 
 type {{modelName|upperFirst}} struct {
 	{% for value in modelSchemas %}
-	{{value.FieldName}} {{value.FieldType}} `gorm:"{{value|fieldGetTag:"gorm"}}"` {{value.FieldComment}}
+	{{value.FieldName}} {{value.FieldType}} `gorm:"{{value|fieldGetTag:"gorm"}}"` // {{value.FieldComment}}
 	{% endfor %}
 }
 
