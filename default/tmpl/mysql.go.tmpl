@@ -3,10 +3,10 @@
 package mysql
 
 import (
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 	"go.uber.org/zap"
 	"{{packagePath}}/pkg/invoker"
-	"{{packagePath}}/pkg/model/transport"
+	"{{packagePath}}/pkg/router/core"
 	{% for value in packageImports %}"{{value}}"{% endfor %}
 )
 
@@ -149,7 +149,7 @@ func {{modelName|upperFirst}}ListMap(conds Conds) (resp map[int]*{{modelName|upp
 }
 
 // {{modelName|upperFirst}}ListPage 根据分页条件查询list
-func {{modelName|upperFirst}}ListPage( conds Conds, reqList *transport.ReqPage) (total int, respList {{modelName|upperFirst}}s) {
+func {{modelName|upperFirst}}ListPage( conds Conds, reqList *core.Pagination) (total int64, respList {{modelName|upperFirst}}s) {
   respList = make({{modelName|upperFirst}}s,0)
   {% if fieldDtimeExist %}conds["dtime"] = 0{% endif %}
 	if reqList.PageSize == 0 {
@@ -162,7 +162,7 @@ func {{modelName|upperFirst}}ListPage( conds Conds, reqList *transport.ReqPage) 
 
 	db := invoker.Db.Model({{modelName|upperFirst}}{}).Where(sql, binds...)
 	db.Count(&total)
-	db.Order(reqList.Sort).Offset((reqList.Current - 1) * reqList.PageSize).Limit(reqList.PageSize).Find(&respList)
+	db.Offset((reqList.Current - 1) * reqList.PageSize).Limit(reqList.PageSize).Find(&respList)
 	return
 }
 

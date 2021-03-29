@@ -5,7 +5,6 @@ package {{packageName}}
 import (
 	"{{packagePath}}/pkg/model/mysql"
 	"{{packagePath}}/pkg/invoker"
-	"{{packagePath}}/pkg/model/transport"
 	"{{packagePath}}/pkg/model/dto"
 	"github.com/spf13/cast"
     "{{packagePath}}/pkg/router/core"
@@ -24,7 +23,7 @@ func {{modelName|upperFirst}}Info(c *core.Context) {
 
 // {{modelName|upperFirst}}List 查询多条带分页记录
 func {{modelName|upperFirst}}List(c *core.Context) {
-    req := &transport.ReqPage{}
+    req := &core.Pagination{}
 	if err := c.Bind(req); err != nil {
 		c.JSONE(1, "参数错误", err)
 		return

@@ -21,11 +21,6 @@ renderPath = "tmpl"
     dstPath = "{{pathBackend}}/pkg/model/mysql/default.go"
     once = true
 [[descriptor]]
-    module = "transport"
-    srcName = "transport.go.tmpl"
-    dstPath = "{{pathBackend}}/pkg/model/transport/transport.go"
-    once = true
-[[descriptor]]
     module = "mysql"
     srcName = "mysql.go.tmpl"
     dstPath = "{{pathBackend}}/pkg/model/mysql/{{modelNameSnake}}.go"
